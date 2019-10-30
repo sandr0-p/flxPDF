@@ -1,0 +1,40 @@
+{
+  "name": "flxpdf",
+  "version": "1.0.0",
+  "description": "flxPDF is a Node.js backend module for converting PDF files into PNG.",
+  "main": "dist/index.js",
+  "scripts": {
+    "debug": "nodemon --inspect",
+    "test": "mocha --timeout 10000 -r ts-node/register -r source-map-support/register --recursive test/**/*_Test.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flexington/flxPDF.git"
+  },
+  "keywords": [
+    "Node.js",
+    "PDF",
+    "PNG"
+  ],
+  "author": "Sandro Paetzold",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/flexington/flxPDF/issues"
+  },
+  "homepage": "https://github.com/flexington/flxPDF#readme",
+  "dependencies": {
+    "uuid": "~3.3.3"
+  },
+  "devDependencies": {
+    "@types/chai": "~4.1.3",
+    "@types/mocha": "~5.2.7",
+    "@types/node": "^12.7.12",
+    "@types/uuid": "~3.4.3",
+    "chai": "~4.2.0",
+    "mocha": "~6.2.0",
+    "nodemon": "~1.19.3",
+    "ts-node": "~8.3.0",
+    "typedoc": "~0.15.0",
+    "typescript": "~3.4.3"
+  }
+}
