@@ -4,6 +4,7 @@ const del = require('del');
 
 const ts = require('gulp-typescript');
 const project = ts.createProject('./tsconfig.json');
+const typedoc = require('gulp-typedoc');
 
 gulp.task('test', () => {
     return gulp.src('./test/**/*.test.ts')
@@ -29,4 +30,11 @@ gulp.task('copy-gs', () => {
         .pipe(gulp.dest('./dist/gs'));
 });
 
-gulp.task('build', gulp.series('test', 'clean', 'compile', 'copy-gs'));
+gulp.task(('docs'), ()=>{
+    return gulp.src(['./src/**/*.ts'])
+    .pipe(typedoc({
+        out:'./dist/doc'
+    }));
+});
+
+gulp.task('build', gulp.series('test', 'clean', 'compile', 'copy-gs', 'docs'));
