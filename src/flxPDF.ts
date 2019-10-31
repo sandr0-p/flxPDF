@@ -31,12 +31,12 @@ export default class flxPDF {
 
                 // Create tmp folder
                 if (!fs.existsSync(tmpPath)) {
-                    fs.mkdirSync(tmpPath);
+                    fs.mkdirSync(tmpPath, { recursive: true } as fs.MakeDirectoryOptions);
                 }
 
                 // Set Buffer or Copy data to tmp folder
                 if (mode === Types.Mode.ArrayBuffer) {
-                    buffer = new Buffer(data as ArrayBuffer);
+                    buffer = Buffer.from(data as ArrayBuffer);
                 } else if (mode === Types.Mode.Base64) {
                     buffer = Buffer.from(data as string, 'base64');
                 } else if (mode === Types.Mode.Buffer) {
@@ -77,7 +77,7 @@ export default class flxPDF {
             try {
                 // Setup gs command
                 // https://stackoverflow.com/a/4829240/1828179
-                let cmd: string = `gs -q -dNODISPLAY -c "(${filePath}) (r) file runpdfbegin pdfpagecount = quit"`;
+                let cmd: string = `${__dirname.split('\\').join('/')}/gs/gs.exe -q -dNODISPLAY -c "(${filePath.split('\\').join('/')}) (r) file runpdfbegin pdfpagecount = quit"`;
 
                 // Execute GS command synchronous in child process
                 let output: string = cp.execSync(cmd).toString();
@@ -110,9 +110,12 @@ export default class flxPDF {
     public convertPages(filePath: string): Promise<Types.Result> {
         return new Promise((resolve, reject) => {
             try {
+                // Get dir name
+                let dirName = path.dirname(filePath);
+
                 // Setup gs command
                 // https://stackoverflow.com/a/3379649/1828179
-                let cmd: string = `gs -dQUIET -dPARANOIDSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=png16m -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -o file-%d.png -r144 ${filePath}`;
+                let cmd: string = `${__dirname.split('\\').join('/')}/gs/gs.exe -dQUIET -dPARANOIDSAFER -dBATCH -dNOPAUSE -dNOPROMPT -sDEVICE=png16m -dTextAlphaBits=4 -dGraphicsAlphaBits=4 -o ${path.join(dirName, 'file-%d.png')} -r144 ${filePath.split('\\').join('/')}`;
 
                 // Execute GS command synchronous in child process
                 let output: string = cp.execSync(cmd).toString();
@@ -125,9 +128,13 @@ export default class flxPDF {
                 // Get all files
                 let dir: string = path.dirname(filePath);
                 let files: Array<string> = fs.readdirSync(dir);
-                let pages: Array<string> = files.filter((item) => {
-                    return (item.startsWith('file') && item.endsWith('png'));
-                });
+
+                let pages: Array<string> = new Array<string>();
+                for (let i = 0, file: string; file = files[i]; i++) {
+                    if (file.startsWith('file') && file.endsWith('png')) {
+                        pages.push(path.join(dir, file));
+                    }
+                }
 
                 // Resove Promise and retunr pages
                 resolve({ success: true, data: pages } as Types.Result)
@@ -144,22 +151,28 @@ export default class flxPDF {
      * @param filePaths An array containing the paths to the png files
      * @returns Returns a Promise of type [[Types.Result]] which contains an array with the DataUrl representation of the images if resolved, or the error message if rejected.
      */
-    public getDataUrl(filePaths: Array<string>): Promise<Types.Result> {
+    public getData(filePaths: Array<string>, mode: Types.Mode): Promise<Types.Result> {
         return new Promise((reject, resolve) => {
             try {
                 // Prepare array for result
-                let files: Array<string> = new Array<string>();
+                let files: Array<ArrayBuffer | Buffer | string> = new Array<ArrayBuffer | Buffer | string>();
 
                 // Iterate over all entries
                 for (let i: number = 0, filePath: string; filePath = filePaths[i]; i++) {
-                    // Set data prefix
-                    let dataPrefix: string = 'data:image/png;base64,';
-
-                    // Get file data as base64 encoded string
-                    let data: string = fs.readFileSync(filePath).toString('base64');
+                    let data: ArrayBuffer | Buffer | string;
+                    if (mode === Types.Mode.ArrayBuffer) {
+                        data = new Uint8Array(fs.readFileSync(filePath));
+                    } else if (mode === Types.Mode.Base64) {
+                        data = fs.readFileSync(filePath).toString('base64');
+                    } else if (mode === Types.Mode.Buffer) {
+                        data = data = fs.readFileSync(filePath) as Buffer;
+                    } else if (mode === Types.Mode.File) {
+                        resolve({ success: true, data: filePaths } as Types.Result);
+                        return;
+                    }
 
                     // Add both to array
-                    files.push(`${dataPrefix}${data}`);
+                    files.push(data);
                 }
 
                 resolve({ success: true, data: files } as Types.Result);
