@@ -1,11 +1,12 @@
 {
-  "name": "flxpdf",
+  "name": "@flexington/flxpdf",
   "version": "1.0.0",
   "description": "flxPDF is a Node.js backend module for converting PDF files into PNG.",
   "main": "dist/index.js",
   "scripts": {
     "debug": "nodemon --inspect",
-    "test": "mocha --timeout 10000 -r ts-node/register -r source-map-support/register --recursive test/**/*.test.ts"
+    "test": "mocha --timeout 10000 -r ts-node/register -r source-map-support/register --recursive test/**/*.test.ts",
+    "build": "gulp build"
   },
   "repository": {
     "type": "git",
