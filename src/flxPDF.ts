@@ -152,7 +152,7 @@ export default class flxPDF {
      * @returns Returns a Promise of type [[Types.Result]] which contains an array with the DataUrl representation of the images if resolved, or the error message if rejected.
      */
     public getData(filePaths: Array<string>, mode: Types.Mode): Promise<Types.Result> {
-        return new Promise((reject, resolve) => {
+        return new Promise((resolve, reject) => {
             try {
                 // Prepare array for result
                 let files: Array<ArrayBuffer | Buffer | string> = new Array<ArrayBuffer | Buffer | string>();
