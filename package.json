@@ -41,7 +41,6 @@
     "ts-node": "~8.3.0",
     "typedoc": "~0.15.0",
     "typescript": "^3.4.5",
-    "gulp-typedoc": "~2.2.2",
-    "typedoc-plugin-markdown": "~2.2.11"
+    "gulp-typedoc": "~2.2.2"
   }
 }

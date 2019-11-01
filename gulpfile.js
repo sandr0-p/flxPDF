@@ -30,11 +30,23 @@ gulp.task('copy-gs', () => {
         .pipe(gulp.dest('./dist/gs'));
 });
 
-gulp.task(('docs'), ()=>{
+gulp.task(('docs'), () => {
     return gulp.src(['./src/**/*.ts'])
-    .pipe(typedoc({
-        out:'./dist/doc'
-    }));
+        .pipe(typedoc({
+            module: 'commonjs',
+            target: 'es6',
+            includeDeclarations: false,
+
+            out: '../../flexington.github.io/flxPDF',
+
+            name: 'flxPDF',
+            version: true,
+            ignoreCompilerErrors: false,
+            mode: 'modules',
+            theme: './node_modules/typedoc-default-themes/bin/default',
+            excludePrivate:true,
+            excludeProtected:true
+        }));
 });
 
 gulp.task('build', gulp.series('test', 'clean', 'compile', 'copy-gs', 'docs'));
