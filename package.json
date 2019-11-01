@@ -1,5 +1,5 @@
 {
-  "name": "@flexington/flxpdf",
+  "name": "flxpdf",
   "version": "1.0.0",
   "description": "flxPDF is a Node.js backend module for converting PDF files into PNG.",
   "main": "dist/index.js",
@@ -22,7 +22,7 @@
   "bugs": {
     "url": "https://github.com/flexington/flxPDF/issues"
   },
-  "homepage": "https://github.com/flexington/flxPDF#readme",
+  "homepage": "https://flexington.github.io/flxPDF/",
   "dependencies": {
     "uuid": "~3.3.3"
   },
