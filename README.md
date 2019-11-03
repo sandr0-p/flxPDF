@@ -10,6 +10,6 @@ flxPDF is a Node.js backend module for converting PDF files into PNG images.
 ### Dependencies
 - [uuid](https://www.npmjs.com/package/uuid)
 ### Installation
-`npm i @flexington/flxPDF --save`
+`npm i flxPDF --save`
 ## Documentation
 The API documentation can be found on [flexington.github.com/flxPDF](https://flexington.github.com/flxPDF).
