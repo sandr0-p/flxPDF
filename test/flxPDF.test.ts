@@ -2,7 +2,7 @@ import { before, after, beforeEach } from 'mocha';
 import { expect } from 'chai';
 import * as fs from 'fs';
 import * as path from 'path';
-import flxPDF from '../src/flxPDF'
+import { flxPDF } from '../src/flxPDF'
 import { Types } from '../src/Types';
 import del from 'del';
 

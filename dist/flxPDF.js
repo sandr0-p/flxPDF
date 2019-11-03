@@ -178,4 +178,4 @@ class flxPDF {
         });
     }
 }
-exports.default = flxPDF;
+exports.flxPDF = flxPDF;

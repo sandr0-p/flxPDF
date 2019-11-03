@@ -4,7 +4,7 @@ import * as cp from 'child_process';
 import { Types } from './Types';
 import uuid = require('uuid/v4');
 
-export default class flxPDF {
+export class flxPDF {
     private _gs: string;
 
     /**

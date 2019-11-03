@@ -18,9 +18,13 @@ gulp.task('clean', () => {
 });
 
 gulp.task('compile', () => {
-    return project.src()
-        .pipe(project())
-        .js.pipe(gulp.dest('dist'));
+    let result = project.src()
+        .pipe(project({
+            declaration: true
+        }));
+    result.js.pipe(gulp.dest('dist'));
+    result.dts.pipe(gulp.dest('dist'));
+    return result;
 });
 
 gulp.task('copy-gs', () => {
@@ -44,8 +48,8 @@ gulp.task(('docs'), () => {
             ignoreCompilerErrors: false,
             mode: 'modules',
             theme: './node_modules/typedoc-default-themes/bin/default',
-            excludePrivate:true,
-            excludeProtected:true
+            excludePrivate: true,
+            excludeProtected: true
         }));
 });
 
