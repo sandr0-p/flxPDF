@@ -6,6 +6,8 @@ const ts = require('gulp-typescript');
 const project = ts.createProject('./tsconfig.json');
 const typedoc = require('gulp-typedoc');
 
+const fs = require('fs');
+
 gulp.task('test', () => {
     return gulp.src('./test/**/*.test.ts')
         .pipe(mocha({
@@ -53,4 +55,9 @@ gulp.task(('docs'), () => {
         }));
 });
 
-gulp.task('build', gulp.series('test', 'clean', 'compile', 'copy-gs', 'docs'));
+// TODO: This is somewhat hacky, should be a proper gulp function so that the task is completing
+gulp.task('jekyll', () => {
+    fs.writeFile('../../flexington.github.io/flxPDF/.nojekyll', '', () => { });
+});
+
+gulp.task('build', gulp.series('test', 'clean', 'compile', 'copy-gs', 'docs', 'jekyll'));
